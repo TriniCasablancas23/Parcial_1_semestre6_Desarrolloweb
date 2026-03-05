@@ -1,0 +1,54 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+.hero-section {
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                url('https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&w=1500&q=80');
+    height: 70vh;
+    background-size: cover;
+    background-position: center;
+}
+
+.section-title {
+    position: relative;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 4px;
+    background-color: #0d6efd;
+}
+
+section#microservicios .section-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.card {
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.bg-dark {
+    background-color: #1a1a1a !important;
+}
+
+footer {
+    padding: 20px 0;
+    text-align: center;
+    background: #111;
+    color: white;
+}

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desarrollo Web - Guía Técnica Profesional</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0062ff;
+            --secondary-color: #6c757d;
+            --dark-bg: #1a1a1a;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            color: #333;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* Estilización de Títulos */
+        .section-title { 
+            margin-bottom: 3rem; 
+            font-weight: 700; 
+            position: relative; 
+            padding-bottom: 15px;
+            color: var(--dark-bg);
+        }
+        .section-title::after { 
+            content: ''; 
+            width: 80px; 
+            height: 5px; 
+            background: var(--primary-color); 
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            border-radius: 2px;
+        }
+        .text-center.section-title::after { left: 50%; transform: translateX(-50%); }
+
+        /* Tarjetas y Contenedores */
+        .card-custom {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        .card-custom:hover { transform: translateY(-10px); }
+
+        .hero-section {
+            background: linear-gradient(135deg, #004ecc 0%, #0062ff 100%);
+            padding: 100px 0;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        }
+
+        .info-badge {
+            background: rgba(0,98,255,0.1);
+            color: var(--primary-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        /* Ajustes de Formulario */
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .list-styled li {
+            margin-bottom: 12px;
+            padding-left: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">TrinInfo <span class="text-primary">CompuWeb</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#apis">Web APIs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#microservicios">Microservicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#desarrollo">Desarrollo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contenedores">Contenedores</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#nube">Cloud-Native</a></li>
+                    <li class="nav-item ms-lg-3"><a class="btn btn-primary btn-sm" href="#contacto">Auditoría</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header id="inicio" class="hero-section text-white text-center">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-3">Parcial 1: Desarrollo Web</h1>
+            <p class="lead mb-4 opacity-75">Arquitecturas modernas, Microservicios y Ecosistemas en la Nube</p>
+            <button class="btn btn-light btn-lg fw-bold px-4 shadow" data-bs-toggle="modal" data-bs-target="#modalInfo">
+                Seguridad JWT
+            </button>
+        </div>
+    </header>
+
+    <section id="apis" class="py-5">
+        <div class="container">
+            <h2 class="section-title">1. Tecnologías de Web APIs</h2>
+            <div class="row g-5 align-items-center">
+                <div class="col-md-6">
+                    <span class="info-badge">Arquitectura & Estándares</span>
+                    <p class="lead fw-bold text-primary">Interconexión de Sistemas</p>
+                    <p>Las APIs actúan como una capa intermedia que procesa transferencias de datos entre sistemas, permitiendo exponer funcionalidades de forma segura bajo protocolos definidos.</p>
+                    
+                    <div class="mt-4 p-4 bg-light rounded-4">
+                        <h5 class="fw-bold"><i class="bi bi-gear-wide-connected"></i> RESTful Design</h5>
+                        <p class="small text-muted mb-3">Estilo arquitectónico introducido por Roy Fielding (2000).</p>
+                        <ul class="list-styled">
+                            <li><strong>Cliente-Servidor:</strong> Separación de interfaz y datos.</li>
+                            <li><strong>Sin Estado (Stateless):</strong> Peticiones independientes sin contexto en servidor.</li>
+                            <li><strong>Caché:</strong> Respuestas optimizadas para rendimiento.</li>
+                            <li><strong>Capas:</strong> Soporte para intermediarios y balanceadores.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-4 border border-2 rounded-4">
+                        <h5 class="fw-bold">SOAP (Simple Object Access Protocol)</h5>
+                        <p class="text-muted">Protocolo estricto basado en XML con alta seguridad industrial.</p>
+                        <hr>
+                        <div class="row text-center">
+                            <div class="col-6 mb-3"><strong>Envelope</strong><br><small>Raíz del mensaje</small></div>
+                            <div class="col-6 mb-3"><strong>Header</strong><br><small>Autenticación</small></div>
+                            <div class="col-6"><strong>Body</strong><br><small>Payload de datos</small></div>
+                            <div class="col-6"><strong>Fault</strong><br><small>Control de errores</small></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="microservicios" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title text-center mx-auto">2. Arquitectura de Microservicios</h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card card-custom p-4">
+                        <h4 class="text-primary mb-3">Filosofía de Diseño</h4>
+                        <p>División de una aplicación en servicios pequeños, independientes y desplegables. Cada servicio gestiona una lógica de negocio única (Pagos, Inventario, etc.).</p>
+                        <ul class="text-success small">
+                            <li><strong>Escalabilidad:</strong> Crecimiento solo del módulo necesario.</li>
+                            <li><strong>Resiliencia:</strong> Un fallo en uno no detiene al resto.</li>
+                            <li><strong>Políglota:</strong> Libertad para usar diferentes lenguajes.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-custom p-4">
+                        <h4 class="text-danger mb-3">Desafíos Críticos</h4>
+                        <p>La descentralización introduce nuevas barreras técnicas que requieren herramientas avanzadas de gestión.</p>
+                        <ul class="text-muted small">
+                            <li><strong>Complejidad:</strong> Requiere orquestadores (Kubernetes).</li>
+                            <li><strong>Consistencia:</strong> Difícil mantener datos sincronizados (Saga pattern).</li>
+                            <li><strong>Latencia:</strong> Mayor tiempo de respuesta por llamadas de red.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="desarrollo" class="py-5">
+        <div class="container">
+            <h2 class="section-title">3. Desarrollo de una Web API</h2>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="accordion shadow-sm" id="devSteps">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#step1">1. Estrategia y Planificación</button></h2>
+                            <div id="step1" class="accordion-collapse collapse show" data-bs-parent="#devSteps">
+                                <div class="accordion-body">Las APIs son mecanismos que permiten a dos componentes de software comunicarse mediante protocolos definidos.</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#step2">2. Diseño del Contrato (Endpoints)</button></h2>
+                            <div id="step2" class="accordion-collapse collapse" data-bs-parent="#devSteps">
+                                <div class="accordion-body">
+                                    Definición de métodos HTTP: 
+                                    <span class="badge bg-success">GET</span> obtención, 
+                                    <span class="badge bg-primary">POST</span> creación, 
+                                    <span class="badge bg-warning">PUT</span> actualización y 
+                                    <span class="badge bg-danger">DELETE</span> eliminación.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#step3">3. Implementación y Seguridad</button></h2>
+                            <div id="step3" class="accordion-collapse collapse" data-bs-parent="#devSteps">
+                                <div class="accordion-body">Uso de frameworks (Express, Flask), implementación de JWT, autenticación y versionamiento de la API.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mt-4 mt-lg-0">
+                    <div class="ratio ratio-16x9 shadow rounded border">
+                        <iframe src="https://www.youtube.com/embed/2sFczigWppk" title="Video de Apoyo" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contenedores" class="py-5 bg-dark text-white">
+        <div class="container">
+            <h2 class="section-title text-white">4. Manejo de Contenedores</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="p-3 bg-secondary rounded-4 h-100">
+                        <h5><i class="bi bi-box-seam"></i> ¿Qué es?</h5>
+                        <p class="small">Unidad estándar que empaqueta código y dependencias. Comparten el kernel del SO, siendo más ligeros que las VMs.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-primary rounded-4 h-100">
+                        <h5><i class="bi bi-docker"></i> Docker</h5>
+                        <p class="small">Crea <strong>Imágenes</strong> (moldes inmutables) que se ejecutan como <strong>Contenedores</strong> portables en cualquier entorno.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-info text-dark rounded-4 h-100">
+                        <h5><i class="bi bi-cpu"></i> Kubernetes</h5>
+                        <p class="small">El orquestador. Gestiona <strong>Pods</strong>, escala automáticamente ante tráfico y asegura alta disponibilidad.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="nube" class="py-5">
+        <div class="container">
+            <h2 class="section-title">5. Cloud-Native Development</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm p-4">
+                        <h6 class="fw-bold text-primary">Modelos de Implementación</h6>
+                        <ul class="small ps-3">
+                            <li><strong>Pública:</strong> AWS, Azure (Compartida).</li>
+                            <li><strong>Privada:</strong> Recursos exclusivos (Seguridad).</li>
+                            <li><strong>Híbrida:</strong> Combinación flexible.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm p-4">
+                        <h6 class="fw-bold text-primary">Capas de Servicio</h6>
+                        <ul class="small ps-3">
+                            <li><strong>IaaS:</strong> Infraestructura (EC2).</li>
+                            <li><strong>PaaS:</strong> Plataforma (Heroku).</li>
+                            <li><strong>SaaS:</strong> Software (Gmail).</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm p-4">
+                        <h6 class="fw-bold text-primary">Pros y Contras</h6>
+                        <p class="small mb-1 text-success">✔ Pago por uso / Escala infinita.</p>
+                        <p class="small text-danger">✘ Vendor Lock-in / Dependencia de red.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="form-container">
+                        <h3 class="text-center mb-4 fw-bold">Solicitar Auditoría</h3>
+                        <form id="contactForm" class="needs-validation" novalidate>
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="form-label">Nombre Completo</label>
+                                    <input type="text" class="form-control" placeholder="Ej. Juan Pérez" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Correo Electrónico</label>
+                                    <input type="email" class="form-control" placeholder="correo@ejemplo.com" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Número Telefónico</label>
+                                    <input type="tel" class="form-control" placeholder="10 dígitos" required>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label">Rol del Solicitante</label>
+                                    <select class="form-select" required>
+                                        <option value="">Seleccione su rol...</option>
+                                        <option>Alumno</option>
+                                        <option>Profesor</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label">Descripción del Proyecto</label>
+                                    <textarea class="form-control" rows="4" placeholder="Detalles de la API a auditar..." required></textarea>
+                                </div>
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Enviar Información</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-5 text-center">
+                <h4 class="fw-bold mb-4">Centro de Datos Global</h4>
+                <div class="rounded-4 overflow-hidden shadow">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3167.3520759876947!2d-102.29811762554071!3d21.877758558079925!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8429ef40c2e22d77%3A0xb4e921b63916c11c!2sMusic%20Zone%20renta%20de%20salas%20de%20ensayos%20para%20bandas!5e1!3m2!1ses-419!2smx!4v1772688543665!5m2!1ses-419!2smx" width="100%" height="350" style="border:0;" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="modalInfo" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0">
+                <div class="modal-header bg-dark text-white border-0">
+                    <h5 class="modal-title fw-bold">Protocolo JWT</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-primary fw-bold">Estructura Triple:</p>
+                    <p class="small">1. <strong>Header:</strong> Algoritmo y tipo.<br>
+                    2. <strong>Payload:</strong> Claims/Datos del usuario.<br>
+                    3. <strong>Signature:</strong> Verificación de integridad.</p>
+                    <div class="alert alert-warning small">
+                        <strong>Tip de Seguridad:</strong> No guardes tokens en LocalStorage para evitar XSS; prefiere Cookies <strong>HttpOnly</strong>.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Validación de Bootstrap
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    } else {
+                        alert("Solicitud procesada correctamente. Nos contactaremos pronto.");
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+</body>
+</html>
