@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desarrollo Web - Guía Técnica Profesional</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0057FF;
+            --primary-dark: #003DBF;
+            --accent: #00E5FF;
+            --dark: #0A0F1E;
+            --dark2: #111827;
+            --light: #F4F7FF;
+            --muted: #6B7280;
+            --success: #10B981;
+            --danger: #EF4444;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            color: #1a1a2e;
+            line-height: 1.7;
+            background: #fff;
+        }
+
+        /* ─── NAVBAR ─── */
+        .navbar {
+            background: var(--dark) !important;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 14px 0;
+        }
+        .navbar-brand { font-weight: 700; letter-spacing: -0.5px; font-size: 1.2rem; }
+        .navbar-brand .text-primary { color: var(--accent) !important; }
+        .nav-link { font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.7) !important; transition: color .2s; }
+        .nav-link:hover { color: var(--accent) !important; }
+        .btn-auditoria { background: var(--primary); color: #fff !important; border-radius: 20px; padding: 6px 18px; font-size: 0.82rem; font-weight: 600; }
+        .btn-auditoria:hover { background: var(--accent); color: var(--dark) !important; }
+
+        /* ─── HERO ─── */
+        .hero-section {
+            background: linear-gradient(135deg, #0A0F1E 0%, #003DBF 60%, #0057FF 100%);
+            padding: 110px 0 130px;
+            clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 60% 60% at 70% 40%, rgba(0,229,255,0.12) 0%, transparent 70%);
+        }
+        .hero-badge {
+            background: rgba(0,229,255,0.15);
+            color: var(--accent);
+            border: 1px solid rgba(0,229,255,0.3);
+            padding: 6px 20px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+        .hero-section h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 700; letter-spacing: -1px; line-height: 1.1; }
+        .hero-section .lead { opacity: 0.75; max-width: 520px; margin: 0 auto 2rem; }
+
+        /* ─── SECTION TITLES ─── */
+        .section-title {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 2.5rem;
+            position: relative;
+            padding-bottom: 14px;
+            color: var(--dark);
+        }
+        .section-title::after {
+            content: '';
+            width: 50px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
+        }
+        .text-center.section-title::after { left: 50%; transform: translateX(-50%); }
+
+        /* ─── CARDS ─── */
+        .card-custom {
+            border: 1px solid #E5E9F0;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+            height: 100%;
+            background: #fff;
+        }
+        .card-custom:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,87,255,0.12);
+            border-color: rgba(0,87,255,0.2);
+        }
+
+        /* ─── INFO BADGE ─── */
+        .info-badge {
+            background: rgba(0,87,255,0.08);
+            color: var(--primary);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.78rem;
+            display: inline-block;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.3px;
+        }
+
+        /* ─── FEATURE BOX ─── */
+        .feature-box {
+            background: var(--light);
+            border-radius: 14px;
+            padding: 22px 24px;
+            border-left: 4px solid var(--primary);
+        }
+        .feature-box.accent { border-left-color: var(--accent); background: #E8FFFE; }
+
+        /* ─── SOAP GRID ─── */
+        .soap-item {
+            background: var(--dark);
+            color: #fff;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            transition: background .2s;
+        }
+        .soap-item:hover { background: var(--primary); }
+        .soap-item strong { display: block; font-size: 1rem; color: var(--accent); }
+        .soap-item small { color: rgba(255,255,255,0.65); font-size: 0.78rem; }
+
+        /* ─── PRINCIPLE PILLS ─── */
+        .principle-pill {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 18px;
+            background: #fff;
+            border: 1px solid #E5E9F0;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: border-color .2s;
+        }
+        .principle-pill:hover { border-color: var(--primary); }
+        .pill-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(0,87,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1rem;
+        }
+
+        /* ─── MICROSERVICIOS ─── */
+        .micro-pro { border-left: 4px solid var(--success); }
+        .micro-con { border-left: 4px solid var(--danger); }
+        .micro-item {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: #F8FAFF;
+            border: 1px solid #E5E9F0;
+        }
+
+        /* ─── ACCORDION ─── */
+        .accordion-button:not(.collapsed) {
+            background: rgba(0,87,255,0.06);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .accordion-button:focus { box-shadow: none; }
+        .accordion-item { border: 1px solid #E5E9F0; border-radius: 10px !important; margin-bottom: 8px; overflow: hidden; }
+
+        /* ─── DARK SECTION ─── */
+        .dark-section {
+            background: var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+        .dark-section::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,87,255,0.15), transparent 70%);
+        }
+        .dark-card {
+            border-radius: 16px;
+            padding: 28px;
+            height: 100%;
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+        .dark-card.blue { background: rgba(0,87,255,0.2); }
+        .dark-card.teal { background: rgba(0,229,255,0.1); border-color: rgba(0,229,255,0.15); }
+        .dark-card.slate { background: rgba(255,255,255,0.04); }
+
+        /* ─── CLOUD CARDS ─── */
+        .cloud-card {
+            border-radius: 16px;
+            padding: 28px;
+            height: 100%;
+            border: 1px solid #E5E9F0;
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            transition: all .3s;
+        }
+        .cloud-card:hover { transform: translateY(-6px); box-shadow: 0 14px 40px rgba(0,87,255,0.1); }
+        .cloud-card h6 { font-weight: 700; font-size: 0.95rem; margin-bottom: 1.2rem; color: var(--primary); }
+
+        /* ─── FORM ─── */
+        .form-container {
+            background: white;
+            padding: 44px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border: 1px solid #E5E9F0;
+        }
+        .form-control, .form-select {
+            border-radius: 10px;
+            border-color: #D1D9E6;
+            padding: 10px 14px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0,87,255,0.1);
+        }
+
+        /* ─── TAGS ─── */
+        .tag {
+            display: inline-block;
+            background: rgba(0,87,255,0.08);
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 4px;
+            margin-bottom: 4px;
+            font-family: 'DM Mono', monospace;
+        }
+        .tag.green { background: rgba(16,185,129,0.1); color: var(--success); }
+        .tag.red { background: rgba(239,68,68,0.1); color: var(--danger); }
+
+        /* ─── STEP NUMBERS ─── */
+        .step-num {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* ─── COMPARISON TABLE ─── */
+        .compare-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        /* ─── VIDEO ─── */
+        .video-wrapper {
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            border: 1px solid #E5E9F0;
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: var(--dark);
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            padding: 24px 0;
+            font-size: 0.82rem;
+        }
+
+        /* ─── MODAL ─── */
+        .modal-content { border-radius: 16px; border: none; overflow: hidden; }
+        .modal-header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; border: none; padding: 20px 28px; }
+        .modal-title { font-weight: 700; }
+        .modal-body { padding: 28px; }
+        .jwt-part { border-radius: 10px; padding: 14px; margin-bottom: 10px; }
+        .jwt-header { background: rgba(0,87,255,0.07); border-left: 4px solid var(--primary); }
+        .jwt-payload { background: rgba(0,229,255,0.07); border-left: 4px solid var(--accent); }
+        .jwt-signature { background: rgba(16,185,129,0.07); border-left: 4px solid var(--success); }
+
+        ul.styled li { margin-bottom: 10px; }
+        .text-accent { color: var(--accent); }
+        .border-accent { border-color: var(--accent) !important; }
+        .bg-primary-soft { background: rgba(0,87,255,0.06); }
+    </style>
+</head>
+<body>
+
+    <!-- ═══ NAVBAR ═══ -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow">
+        <div class="container">
+            <a class="navbar-brand" href="#">TrinInfo <span class="text-primary">CompuWeb</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                    <li class="nav-item"><a class="nav-link" href="#apis">Web APIs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#microservicios">Microservicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#desarrollo">Desarrollo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contenedores">Contenedores</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#nube">Cloud-Native</a></li>
+                    <li class="nav-item ms-lg-2"><a class="nav-link btn-auditoria" href="#contacto">Auditoría</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═══ HERO ═══ -->
+    <header id="inicio" class="hero-section text-white text-center">
+        <div class="container position-relative">
+            <div class="hero-badge">Unidad I & II · Desarrollo Web 2026</div>
+            <h1 class="fw-bold mb-3">Parcial 1: Desarrollo Web</h1>
+            <p class="lead mx-auto">Arquitecturas modernas, Microservicios, Contenedores y Ecosistemas en la Nube</p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <button class="btn btn-light fw-bold px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalInfo">
+                    🔐 Seguridad JWT
+                </button>
+                <a href="#apis" class="btn btn-outline-light px-4">Explorar Temas ↓</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══ SECCIÓN 1: WEB APIS ═══ -->
+    <section id="apis" class="py-5">
+        <div class="container">
+            <h2 class="section-title">1. Tecnologías de Web APIs</h2>
+
+            <div class="row g-5 align-items-start mb-5">
+                <div class="col-md-7">
+                    <span class="info-badge">Arquitectura & Estándares</span>
+                    <p class="lead fw-semibold" style="color:var(--primary)">¿Qué es una API?</p>
+                    <p>Las APIs (Application Programming Interfaces) son mecanismos que permiten a dos componentes de software comunicarse mediante protocolos definidos. Actúan como una <strong>capa intermedia</strong> que procesa transferencias de datos entre sistemas, permitiendo a las empresas abrir sus funcionalidades de manera segura y controlada.</p>
+
+                    <div class="feature-box mt-4">
+                        <h5 class="fw-bold mb-3">🔄 REST (Representational State Transfer)</h5>
+                        <p class="text-muted small mb-3">Estilo arquitectónico introducido por Roy Fielding en su tesis doctoral (2000). No es un protocolo sino un conjunto de principios orientados a la eficiencia, escalabilidad y simplicidad.</p>
+                        <div class="principle-pill">
+                            <div class="pill-icon">🖥️</div>
+                            <div><strong>Arquitectura Cliente-Servidor:</strong> Separa las preocupaciones de la interfaz de usuario de las de almacenamiento y lógica de negocio.</div>
+                        </div>
+                        <div class="principle-pill">
+                            <div class="pill-icon">🔁</div>
+                            <div><strong>Sin Estado (Stateless):</strong> Cada petición debe ser completamente independiente; el servidor no guarda contexto entre solicitudes.</div>
+                        </div>
+                        <div class="principle-pill">
+                            <div class="pill-icon">⚡</div>
+                            <div><strong>Capacidad de Caché:</strong> Mejora el rendimiento definiendo qué respuestas pueden reutilizarse para evitar peticiones redundantes.</div>
+                        </div>
+                        <div class="principle-pill">
+                            <div class="pill-icon">🗂️</div>
+                            <div><strong>Sistema por Capas:</strong> Permite el uso de intermediarios como balanceadores de carga, proxies y gateways transparentes.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="p-4 border border-2 rounded-4 mb-4" style="border-color:#E5E9F0 !important">
+                        <h5 class="fw-bold mb-1">📨 SOAP</h5>
+                        <p class="text-muted small mb-1">(Simple Object Access Protocol)</p>
+                        <p class="small">Protocolo de comunicación <strong>estrictamente basado en XML</strong>. A diferencia de REST, define reglas muy rígidas para el envío de mensajes. Es independiente del lenguaje y del protocolo de transporte (HTTP, SMTP o JMS).</p>
+                        <hr>
+                        <p class="small fw-semibold mb-2 text-muted">ESTRUCTURA DEL MENSAJE:</p>
+                        <div class="row g-2">
+                            <div class="col-6"><div class="soap-item"><strong>Envelope</strong><small>Raíz del documento XML</small></div></div>
+                            <div class="col-6"><div class="soap-item"><strong>Header</strong><small>Autenticación / metadatos</small></div></div>
+                            <div class="col-6"><div class="soap-item"><strong>Body</strong><small>Payload de datos</small></div></div>
+                            <div class="col-6"><div class="soap-item"><strong>Fault</strong><small>Reporte de errores</small></div></div>
+                        </div>
+                    </div>
+
+                    <div class="feature-box accent">
+                        <h6 class="fw-bold">⚖️ REST vs SOAP</h6>
+                        <table class="table table-sm small mb-0 mt-2">
+                            <thead><tr><th>Criterio</th><th>REST</th><th>SOAP</th></tr></thead>
+                            <tbody>
+                                <tr><td>Formato</td><td>JSON/XML</td><td>Solo XML</td></tr>
+                                <tr><td>Rigidez</td><td>Flexible</td><td>Estricto</td></tr>
+                                <tr><td>Uso ideal</td><td>Web/Móvil</td><td>Empresarial</td></tr>
+                                <tr><td>Velocidad</td><td>Mayor</td><td>Menor</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-2 align-items-center">
+                <div class="col-md-6">
+                    <div class="rounded-4 overflow-hidden shadow-sm border" style="border-color:#E5E9F0 !important">
+                        <img src="https://www.shutterstock.com/image-vector/rest-api-model-representational-state-600nw-2569804351.jpg"
+                             alt="Arquitectura REST API"
+                             class="img-fluid w-100"
+                             style="object-fit:cover; max-height:240px;">
+                    </div>
+                    <p class="text-muted small text-center mt-2">🖼️ Arquitectura RESTful: flujo cliente → servidor → respuesta</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="video-wrapper ratio ratio-16x9">
+                        <iframe video src="api.mp4" title="¿Qué es una API REST?" allowfullscreen></iframe>
+                    </div>
+                    <p class="text-muted small text-center mt-2">📹 ¿Qué es una API REST? — Video explicativo</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="microservicios" class="py-5" style="background: var(--light)">
+        <div class="container">
+            <h2 class="section-title text-center mx-auto" style=>2. Arquitectura de Microservicios</h2>
+            <p class="text-center text-muted mb-5 mx-auto" style="max-width:680px">Frente a las aplicaciones monolíticas, los microservicios proponen dividir inteligentemente la aplicación en servicios pequeños, independientes y desplegables de forma separada.</p>
+
+            <div class="row g-4 mb-5">
+                <div class="col-md-6">
+                    <div class="card-custom p-4">
+                        <h4 class="fw-bold mb-1" style="color:var(--primary)">¿Qué son?</h4>
+                        <p class="text-muted small mb-3">Enfoque donde cada servicio gestiona una lógica de negocio única</p>
+                        <p>La arquitectura de Microservicios es un enfoque de diseño donde una aplicación se construye como un conjunto de servicios pequeños, independientes y desplegables por separado. A diferencia de la arquitectura "monolítica", donde todo el código está en un solo bloque, aquí cada servicio se encarga de una <strong>función de negocio específica</strong> (por ejemplo: pagos, inventario, usuarios).</p>
+                        <p>Esta independencia permite que cada servicio sea escrito en un lenguaje de programación diferente y que se escale de forma individual. Si el módulo de pagos recibe mucho tráfico, puedes replicar solo ese servicio sin copiar toda la aplicación.</p>
+                        <div class="d-flex flex-wrap gap-1 mt-3">
+                            <span class="tag green">Escalabilidad</span>
+                            <span class="tag green">Resiliencia</span>
+                            <span class="tag green">Políglota</span>
+                            <span class="tag green">Agilidad</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="micro-item micro-pro">
+                                <strong class="text-success">✅ Escalabilidad Granular</strong>
+                                <p class="small mb-0 mt-1">Si solo el módulo de "Procesamiento de Pagos" está saturado, escalas únicamente ese servicio. En un monolito tendrías que replicar toda la aplicación, gastando recursos innecesariamente.</p>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="micro-item micro-pro">
+                                <strong class="text-success">✅ Resiliencia (Aislamiento de Errores)</strong>
+                                <p class="small mb-0 mt-1">Si un microservicio falla (recomendaciones), el resto sigue funcionando. El usuario quizás no vea recomendaciones, pero aún puede comprar y ver su carrito.</p>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="micro-item micro-pro">
+                                <strong class="text-success">✅ Libertad Tecnológica</strong>
+                                <p class="small mb-0 mt-1">Python para IA, Node.js para chat en tiempo real y Go para alta velocidad, todo dentro de la misma plataforma.</p>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="micro-item micro-pro">
+                                <strong class="text-success">✅ Despliegue Independiente</strong>
+                                <p class="small mb-0 mt-1">Un equipo actualiza "Notificaciones" sin riesgo de tirar "Inventario". Ciclos de vida completamente separados.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="fw-bold mb-3 text-danger">⚠️ Desafíos Críticos</h5>
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-3">
+                    <div class="micro-item micro-con h-100">
+                        <strong class="text-danger">❌ Complejidad Operativa</strong>
+                        <p class="small mb-0 mt-1">Gestionar docenas o cientos de pequeñas apps requiere orquestadores (Kubernetes), monitoreo avanzado y logs centralizados.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="micro-item micro-con h-100">
+                        <strong class="text-danger">❌ Latencia de Red</strong>
+                        <p class="small mb-0 mt-1">En monolito las funciones se llaman en memoria (instantáneo). En microservicios, cada comunicación es una llamada HTTP/gRPC que añade milisegundos.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="micro-item micro-con h-100">
+                        <strong class="text-danger">❌ Consistencia de Datos</strong>
+                        <p class="small mb-0 mt-1">Cada servicio tiene su propia base de datos. Mantener integridad requiere patrones complejos como <strong>Saga</strong> para transacciones distribuidas.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="micro-item micro-con h-100">
+                        <strong class="text-danger">❌ Depuración Difícil</strong>
+                        <p class="small mb-0 mt-1">Rastrear un error que atraviesa cinco servicios requiere "trazabilidad distribuida" para entender qué pasó y en qué microservicio ocurrió.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-3 align-items-center">
+                <div class="col-md-6">
+                    <div class="rounded-4 overflow-hidden shadow-sm border" style="border-color:#E5E9F0 !important">
+                        <img src="https://www.mytaskpanel.com/wp-content/uploads/2021/06/consulting-blog-31a.webp"
+                             alt="Arquitectura de Microservicios"
+                             class="img-fluid w-100"
+                             style="object-fit:cover; max-height:240px;">
+                    </div>
+                    <p class="text-muted small text-center mt-2">🖼️ Ejemplo real: arquitectura de microservicios de Uber</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="video-wrapper ratio ratio-16x9">
+                        <iframe video src="microservicios.mp4" title="Microservicios explicados" allowfullscreen></iframe>
+                    </div>
+                    <p class="text-muted small text-center mt-2">📹 ¿Qué son los Microservicios? — Video explicativo</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="desarrollo" class="py-5">
+        <div class="container">
+            <h2 class="section-title">3. Desarrollo de una Web API</h2>
+            <div class="row g-5">
+                <div class="col-lg-8">
+                    <p class="lead mb-4">Implica el proceso técnico de construir los puntos de entrada (<strong>endpoints</strong>) de un sistema. Comienza con el diseño del modelo de datos y la definición de rutas (URLs). Es crucial considerar la seguridad mediante tokens como <strong>JWT</strong> y documentar con <strong>Swagger/OpenAPI</strong>.</p>
+
+                    <div class="accordion" id="devSteps">
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button fw-semibold" data-bs-toggle="collapse" data-bs-target="#step1">
+                                    <div class="step-num me-3">1</div> Estrategia y Planificación
+                                </button>
+                            </h2>
+                            <div id="step1" class="accordion-collapse collapse show" data-bs-parent="#devSteps">
+                                <div class="accordion-body">
+                                    <ul class="styled">
+                                        <li><strong>Definición de Objetivos:</strong> Es fundamental comprender los problemas que la API intentará resolver y quiénes serán sus usuarios finales (desarrolladores internos, socios, público).</li>
+                                        <li><strong>Análisis de Requerimientos:</strong> Identificar tanto los requisitos funcionales (qué hace la API) como los no funcionales (rendimiento, seguridad, disponibilidad), incluyendo los datos que se manipularán.</li>
+                                        <li><strong>Planificación del Proyecto:</strong> Asignación de recursos, estimación de costos y tiempos, y elección de la metodología de desarrollo (Agile, Scrum, Kanban).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-semibold" data-bs-toggle="collapse" data-bs-target="#step2">
+                                    <div class="step-num me-3">2</div> Diseño del Contrato (Endpoints)
+                                </button>
+                            </h2>
+                            <div id="step2" class="accordion-collapse collapse" data-bs-parent="#devSteps">
+                                <div class="accordion-body">
+                                    <p><strong>Estándares y Convenciones:</strong> Seguir principios REST y usar JSON/XML facilita que otros desarrolladores entiendan y consuman la API.</p>
+                                    <p><strong>Métodos HTTP:</strong></p>
+                                    <div class="d-flex flex-wrap gap-2 mb-3">
+                                        <span class="tag green">GET — Obtener datos</span>
+                                        <span class="tag" style="background:rgba(0,87,255,0.08);color:var(--primary)">POST — Crear recursos</span>
+                                        <span class="tag" style="background:rgba(245,158,11,0.1);color:#B45309">PUT — Actualizar</span>
+                                        <span class="tag red">DELETE — Eliminar</span>
+                                    </div>
+                                    <p class="small text-muted">Ejemplo: <code>GET /posts</code> lista artículos · <code>POST /posts</code> crea uno · <code>DELETE /posts/{'{id}'}</code> elimina por ID</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-semibold" data-bs-toggle="collapse" data-bs-target="#step3">
+                                    <div class="step-num me-3">3</div> Implementación y Seguridad
+                                </button>
+                            </h2>
+                            <div id="step3" class="accordion-collapse collapse" data-bs-parent="#devSteps">
+                                <div class="accordion-body">
+                                    <ul class="styled">
+                                        <li><strong>Uso de Frameworks:</strong> Express.js para Node.js, Flask o FastAPI para Python, Spring Boot para Java. Aceleran el desarrollo con patrones probados.</li>
+                                        <li><strong>Autenticación y Autorización:</strong> Implementar mecanismos como JWT, OAuth 2.0 para verificar identidad (autenticación) y permisos (autorización) y evitar accesos no autorizados.</li>
+                                        <li><strong>Versionamiento:</strong> Permite introducir mejoras sin afectar a usuarios que dependen de versiones anteriores. Ejemplo: <code>/api/v1/users</code> vs <code>/api/v2/users</code>.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-semibold" data-bs-toggle="collapse" data-bs-target="#step4">
+                                    <div class="step-num me-3">4</div> Calidad, Documentación y Lanzamiento
+                                </button>
+                            </h2>
+                            <div id="step4" class="accordion-collapse collapse" data-bs-parent="#devSteps">
+                                <div class="accordion-body">
+                                    <ul class="styled">
+                                        <li><strong>Pruebas (Testing):</strong> Pruebas unitarias (componentes individuales) y de integración para asegurar que el sistema maneje errores correctamente en todos los escenarios.</li>
+                                        <li><strong>Documentación Exhaustiva:</strong> Esencial para que otros sepan cómo usar la API. Herramientas como <strong>Swagger/OpenAPI</strong> o <strong>Postman</strong> generan documentación automática con ejemplos y casos de error.</li>
+                                        <li><strong>Despliegue y Monitoreo:</strong> La API se implementa en producción buscando escalabilidad. Una vez "en vivo", se requiere monitoreo constante para detectar problemas de eficiencia o seguridad.</li>
+                                        <li><strong>Monetización:</strong> Si la API es para uso externo, puede publicarse en mercados especializados (API Marketplaces) para generar ingresos.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="video-wrapper ratio ratio-16x9 mb-4">
+                        <iframe img src="https://webaqui.com/wp-content/uploads/2024/06/que-es-api-web.jpg" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-wrapper ratio ratio-16x9">
+                        <iframe video src="desarrolloapi.mp4" title="Desarrollo Web API" allowfullscreen></iframe>
+                    </div>
+                    <p class="text-muted small text-center mt-2">📹 Material de apoyo al tema</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="contenedores" class="py-5 dark-section text-white">
+        <div class="container position-relative">
+            <h2 class="section-title text-white">4. Manejo de Contenedores</h2>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="dark-card slate">
+                        <h5 class="fw-bold mb-3 text-accent">📦 ¿Qué es un Contenedor?</h5>
+                        <p class="small" style="color:rgba(255,255,255,0.8)">Una unidad estándar de software que empaqueta el código de una aplicación y <strong>todas sus dependencias</strong> (bibliotecas, archivos de configuración, tiempo de ejecución) para que se ejecute de forma rápida y confiable de un entorno a otro.</p>
+                        <hr style="border-color:rgba(255,255,255,0.1)">
+                        <div class="mb-3">
+                            <span class="fw-bold text-accent">🔒 Aislamiento</span>
+                            <p class="small mt-1" style="color:rgba(255,255,255,0.7)">A diferencia de las VMs, los contenedores no incluyen un SO completo. Comparten el <strong>kernel</strong> del SO anfitrión, haciéndolos increíblemente ligeros (MB vs GB).</p>
+                        </div>
+                        <div>
+                            <span class="fw-bold text-accent">🚀 Portabilidad</span>
+                            <p class="small mt-1 mb-0" style="color:rgba(255,255,255,0.7)">Un contenedor creado en la laptop de un desarrollador funcionará exactamente igual en un servidor de pruebas o en infraestructura de nube.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="dark-card blue">
+                        <h5 class="fw-bold mb-3">🐳 Docker</h5>
+                        <p class="small" style="color:rgba(255,255,255,0.85)">La plataforma que popularizó los contenedores. Permite automatizar el despliegue de aplicaciones dentro de contenedores de software.</p>
+                        <hr style="border-color:rgba(255,255,255,0.15)">
+                        <div class="mb-2 p-3 rounded" style="background:rgba(255,255,255,0.06)">
+                            <strong class="text-accent">Dockerfile</strong>
+                            <p class="small mb-0 mt-1" style="color:rgba(255,255,255,0.75)">Archivo de texto con instrucciones para construir una imagen. Ej: "Usa Python 3.9", "Copia mi código", "Ejecuta este comando".</p>
+                        </div>
+                        <div class="mb-2 p-3 rounded" style="background:rgba(255,255,255,0.06)">
+                            <strong class="text-accent">Imagen</strong>
+                            <p class="small mb-0 mt-1" style="color:rgba(255,255,255,0.75)">Paquete ejecutable e inmutable con todo lo necesario para correr la app. Es el "molde".</p>
+                        </div>
+                        <div class="p-3 rounded" style="background:rgba(255,255,255,0.06)">
+                            <strong class="text-accent">Contenedor</strong>
+                            <p class="small mb-0 mt-1" style="color:rgba(255,255,255,0.75)">Instancia en ejecución de una imagen. Puedes tener 10 contenedores corriendo de la misma imagen.</p>
+                        </div>
+                        <div class="mt-3 p-3 rounded" style="background:rgba(0,229,255,0.1); border:1px solid rgba(0,229,255,0.2)">
+                            <p class="small mb-0" style="color:rgba(255,255,255,0.85)"><strong>💡 Ejemplo:</strong> Con Docker, creas una imagen que ya tiene Node.js instalado; cualquier servidor con Docker podrá correr tu API en segundos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="dark-card teal">
+                        <h5 class="fw-bold mb-3" style="color:var(--dark)">☸️ Kubernetes (K8s)</h5>
+                        <p class="small" style="color:rgba(0,0,0,0.75)">Si Docker crea y corre un contenedor, <strong>Kubernetes gestiona cientos</strong> al mismo tiempo en un clúster de servidores. Es el cerebro que decide dónde y cómo deben vivir los contenedores.</p>
+                        <hr style="border-color:rgba(0,0,0,0.1)">
+                        <div class="mb-2 p-3 rounded" style="background:rgba(0,0,0,0.05)">
+                            <strong>Pod</strong>
+                            <p class="small mb-0 mt-1" style="color:rgba(0,0,0,0.65)">Unidad más pequeña en K8s. Puede contener uno o más contenedores que comparten almacenamiento y red.</p>
+                        </div>
+                        <div class="mb-2 p-3 rounded" style="background:rgba(0,0,0,0.05)">
+                            <strong>Node (Nodo)</strong>
+                            <p class="small mb-0 mt-1" style="color:rgba(0,0,0,0.65)">Máquina (física o virtual) donde se ejecutan los Pods.</p>
+                        </div>
+                        <div class="mb-3 p-3 rounded" style="background:rgba(0,0,0,0.05)">
+                            <strong>Deployment</strong>
+                            <p class="small mb-0 mt-1" style="color:rgba(0,0,0,0.65)">Define el "estado deseado". Ej: "siempre 3 copias de mi Web API". Si un contenedor falla, K8s lo reinicia automáticamente.</p>
+                        </div>
+                        <div class="p-3 rounded" style="background:rgba(0,87,255,0.12); border:1px solid rgba(0,87,255,0.2)">
+                            <p class="small mb-0" style="color:rgba(0,0,0,0.8)"><strong>💡 Ejemplo:</strong> Tu API se vuelve viral. K8s detecta el tráfico y crea 5 nuevos Pods automáticamente para repartir la carga.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="nube" class="py-5" style="background:var(--light)">
+        <div class="container">
+            <h2 class="section-title">5. Cloud-Native Development</h2>
+            <p class="lead mb-5" style="max-width:700px">El enfoque <strong>Cloud-Native</strong> no significa tomar una app vieja y subirla a internet (<em>Lift-and-Shift</em>). Es diseñar específicamente para explotar elasticidad, automatización y resiliencia. Una app nativa de la nube está pensada para <strong>fallar y recuperarse sola</strong>.</p>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="cloud-card">
+                        <h6>☁️ Modelos de Implementación</h6>
+                        <div class="mb-3 p-3 rounded" style="background:#F0F7FF; border-left:3px solid var(--primary)">
+                            <strong class="small">Nube Pública</strong>
+                            <p class="small mb-0 mt-1 text-muted">Recursos de AWS, Google Cloud o Azure compartidos entre clientes. Más económica y escalable, ideal para startups.</p>
+                        </div>
+                        <div class="mb-3 p-3 rounded" style="background:#F0FFF8; border-left:3px solid var(--success)">
+                            <strong class="small">Nube Privada</strong>
+                            <p class="small mb-0 mt-1 text-muted">Recursos exclusivos de una organización. Máximo control y seguridad. Preferida por bancos y gobiernos.</p>
+                        </div>
+                        <div class="p-3 rounded" style="background:#FFF8F0; border-left:3px solid #F59E0B">
+                            <strong class="small">Nube Híbrida</strong>
+                            <p class="small mb-0 mt-1 text-muted">Combinación de ambas. Datos confidenciales en privada + nube pública para picos de tráfico (Hot Sale).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="cloud-card">
+                        <h6>🔧 Modelos de Servicio</h6>
+                        <div class="mb-3 p-3 rounded" style="background:#F0F7FF; border-left:3px solid var(--primary)">
+                            <strong class="small">IaaS — Infraestructura como Servicio</strong>
+                            <p class="small mb-0 mt-1 text-muted">El proveedor da servidores y redes virtuales. Tú instalas el SO y todo lo demás. <em>Ej: Amazon EC2</em></p>
+                        </div>
+                        <div class="mb-3 p-3 rounded" style="background:#F0FFF8; border-left:3px solid var(--success)">
+                            <strong class="small">PaaS — Plataforma como Servicio</strong>
+                            <p class="small mb-0 mt-1 text-muted">El proveedor da el entorno de ejecución. Solo subes tu código. <em>Ej: Heroku, Google App Engine</em></p>
+                        </div>
+                        <div class="p-3 rounded" style="background:#FFF8F0; border-left:3px solid #F59E0B">
+                            <strong class="small">SaaS — Software como Servicio</strong>
+                            <p class="small mb-0 mt-1 text-muted">Software listo vía navegador. No programas nada. <em>Ej: Gmail, Slack, Salesforce</em></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="cloud-card">
+                        <h6>⚖️ Ventajas y Desventajas</h6>
+                        <p class="small fw-semibold text-success mb-2">✅ Ventajas</p>
+                        <ul class="small text-muted mb-3">
+                            <li class="mb-1"><strong>Pago por uso:</strong> Solo pagas los minutos/segundos que el servidor está encendido. Sin compra de hardware.</li>
+                            <li class="mb-1"><strong>Escalabilidad Infinita:</strong> De 100 a 1 millón de usuarios en minutos sin comprar hardware.</li>
+                            <li><strong>Actualizaciones Automáticas:</strong> El proveedor mantiene el hardware y software base al día.</li>
+                        </ul>
+                        <p class="small fw-semibold text-danger mb-2">❌ Desventajas</p>
+                        <ul class="small text-muted mb-0">
+                            <li class="mb-1"><strong>Vendor Lock-in:</strong> Construir con herramientas exclusivas de Amazon hace difícil migrar a Google Cloud.</li>
+                            <li class="mb-1"><strong>Dependencia de Conexión:</strong> Si internet falla o el proveedor cae, tu negocio se detiene.</li>
+                            <li><strong>Seguridad y Privacidad:</strong> Datos en servidores de terceros requieren auditorías estrictas.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="py-5 bg-white">
+        <div class="container">
+            <div class="row g-5 justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="form-container">
+                        <h3 class="text-center mb-1 fw-bold">Solicitar Auditoría</h3>
+                        <p class="text-center text-muted small mb-4">Completa el formulario y nos contactaremos contigo</p>
+                        <form id="contactForm" class="needs-validation" novalidate>
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold small">Nombre Completo</label>
+                                    <input type="text" class="form-control" placeholder="Ej. Juan Pérez" required>
+                                    <div class="invalid-feedback">Por favor ingresa tu nombre completo.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold small">Correo Electrónico</label>
+                                    <input type="email" class="form-control" placeholder="correo@ejemplo.com" required>
+                                    <div class="invalid-feedback">Ingresa un correo válido.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold small">Número Telefónico</label>
+                                    <input type="tel" class="form-control" placeholder="10 dígitos" pattern="[0-9]{10}" required>
+                                    <div class="invalid-feedback">Ingresa 10 dígitos.</div>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold small">Rol del Solicitante</label>
+                                    <select class="form-select" required>
+                                        <option value="">Seleccione su rol...</option>
+                                        <option>Alumno</option>
+                                        <option>Profesor</option>
+                                    </select>
+                                    <div class="invalid-feedback">Selecciona un rol.</div>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold small">Descripción del Proyecto</label>
+                                    <textarea class="form-control" rows="4" placeholder="Detalles de la API a auditar..." required></textarea>
+                                    <div class="invalid-feedback">Describe tu proyecto.</div>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <button type="submit" class="btn w-100 py-2 fw-bold text-white" style="background:var(--primary); border-radius:10px; font-size:0.95rem;">
+                                        Enviar Solicitud →
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5 text-center">
+                <h4 class="fw-bold mb-2">📍 Centro de Datos Global</h4>
+                <p class="text-muted small mb-4">Ubicación de referencia del proyecto</p>
+                <div class="rounded-4 overflow-hidden shadow-lg" style="border:1px solid #E5E9F0;">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3167.3520759876947!2d-102.29811762554071!3d21.877758558079925!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8429ef40c2e22d77%3A0xb4e921b63916c11c!2sMusic%20Zone%20renta%20de%20salas%20de%20ensayos%20para%20bandas!5e1!3m2!1ses-419!2smx!4v1772688543665!5m2!1ses-419!2smx" width="100%" height="350" style="border:0;" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p class="mb-0">TrinInfo <strong style="color:var(--accent)">CompuWeb</strong> · Desarrollo Web · Parcial 1 · 2026</p>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="modalInfo" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">🔐 Protocolo de Seguridad JWT</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted small mb-3">Los <strong>JSON Web Tokens (JWT)</strong> son un estándar abierto (RFC 7519) para transmitir información de forma segura entre partes como un objeto JSON compacto y autoverificable.</p>
+
+                    <div class="jwt-part jwt-header">
+                        <strong>1. Header (Encabezado)</strong>
+                        <p class="small mb-0 mt-1">Algoritmo utilizado (HS256, RS256) y tipo de token (JWT).</p>
+                    </div>
+                    <div class="jwt-part jwt-payload">
+                        <strong>2. Payload (Carga útil)</strong>
+                        <p class="small mb-0 mt-1">Claims o declaraciones: datos del usuario, roles, expiración. <em>No almacenes datos sensibles aquí, es solo Base64.</em></p>
+                    </div>
+                    <div class="jwt-part jwt-signature">
+                        <strong>3. Signature (Firma)</strong>
+                        <p class="small mb-0 mt-1">Verifica que el token no fue alterado. Generada con la clave secreta del servidor.</p>
+                    </div>
+
+                    <div class="alert alert-warning small mt-3 mb-0 rounded-3">
+                        <strong>⚠️ Tip de Seguridad:</strong> Nunca almacenes tokens en <code>LocalStorage</code>. Usa <strong>Cookies HttpOnly</strong> para prevenir ataques XSS. Los tokens deben tener tiempo de expiración corto.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function () {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    } else {
+                        event.preventDefault();
+                        alert("✅ Solicitud procesada correctamente. Nos contactaremos pronto.");
+                        form.reset();
+                        form.classList.remove('was-validated');
+                        return;
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+</body>
+</html>
